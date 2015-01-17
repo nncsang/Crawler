@@ -87,11 +87,11 @@ class LiveScoreParser(HTMLParser):
 
 
 
-class LiveScoreScaper:
+class LiveScoreScraper:
     url = 'http://www.livescore.com/'
 
     @staticmethod
-    def scap():
+    def scrap():
         try:
             response = urllib2.urlopen('http://www.livescore.com/')
             html = response.read()
