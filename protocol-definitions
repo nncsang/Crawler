@@ -1,0 +1,58 @@
+REQUEST:
+	CREATE DATABASE dbname;
+
+	DROP DATABASE dbname;
+
+	DROP TABLE table_name;
+	TRUNCATE TABLE table_name;
+
+	CREATE TABLE table_name
+	(
+		column_name1 data_type(size) default NULL auto_increment,
+		column_name2 data_type(size),
+		column_name3 data_type(size),
+		....
+		PRIMARY KEY (id)
+	);
+
+	ALTER TABLE table_name
+	ADD column_name datatype
+
+	ALTER TABLE table_name
+	DROP COLUMN column_name
+
+	ALTER TABLE table_name
+	MODIFY COLUMN column_name datatype
+
+	SELECT column_name,column_name
+	FROM table_name;
+
+	UPDATE table_name
+	SET column1=value1,column2=value2,...
+	WHERE some_column=some_value;
+
+	DELETE 
+	    + DELETE FROM table_name
+		WHERE some_column=some_value;
+
+		+ DELETE * FROM table_name;
+		+ DELETE FROM table_name;
+
+
+Type:
+	+ INTEGER
+	+ LONG
+	+ DOUBLE
+	+ FLOAT
+	+ STRING
+	+ BOOLEAN
+
+Logic: AND OR
+
+RESPONE:
+Status:
+	+ OK
+		+ Number of answer
+		+ Length of 1 answer
+	+ Error:
+		+ Message:
