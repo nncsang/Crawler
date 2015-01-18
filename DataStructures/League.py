@@ -9,4 +9,4 @@ class League:
         self.teams.append(team)
 
     def __str__(self):
-        return self.name + '\n' + '\n'.join([str(team) for team in self.teams]) + '\n' + '*****************' + '\n\n'
+        return self.name + '\n' + '\n'.join([str(team) for team in self.teams]) + '\n' + '*****************' + '\n'

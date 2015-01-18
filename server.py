@@ -12,9 +12,9 @@ try:
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     srv.bind((GlobalVariable.HOST, GlobalVariable.PORT))
     srv.listen(GlobalVariable.BACK_LOG)
-    srv.settimeout(GlobalVariable.TIME_OUT)
+    #srv.settimeout(GlobalVariable.TIME_OUT)
 
-    print "Stated listening on %s:%s" % (GlobalVariable.HOST, GlobalVariable.PORT)
+    Logger.notify(Logger.INFO, 'Starting listening on %s:%s' % (GlobalVariable.HOST, GlobalVariable.PORT))
 
     # Initialize MUTEX
     srv_lock=threading.Lock()
@@ -26,7 +26,7 @@ try:
                 conn, addr = srv.accept()
                 srv_lock.release()
 
-                print "Client %s : %d connected" % addr
+                print("Client %s : %d connected" % addr)
 
                 while True:
                     data=conn.recv(1024)
@@ -36,19 +36,19 @@ try:
                     conn.send(data.upper())
 
                 conn.close()
-                print "Client %s : %d disconnected" % addr
+                print("Client %s : %d disconnected" % addr)
 
 
 
 
-    # pool=[Client() for i in range(GlobalVariable.POOL_SIZE)]
-    # [t.start() for t in pool]
-    # [t.join() for t in pool]
+    pool=[Client() for i in range(GlobalVariable.POOL_SIZE)]
+    [t.start() for t in pool]
+    [t.join() for t in pool]
 
-except socket.error, e:
-    Logger.log(str(e))
-except socket.timeout, e:
-    Logger.log(str(e))
+except socket.error:
+    Logger.log(str(socket.error))
+except socket.timeout:
+    Logger.log(str(socket.error))
 
 
 

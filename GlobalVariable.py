@@ -6,3 +6,4 @@ POOL_SIZE = 1
 BACK_LOG = 5
 TIME_OUT = 10
 LOG_FILE = "server.log"
+LEAGUE_DATABSE = "league.json"

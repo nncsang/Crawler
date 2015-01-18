@@ -1,11 +1,13 @@
 __author__ = 'nncsang'
 
 import urllib2
-import Logger
+from Logger import Logger
 from HTMLParser import HTMLParser
 from DataStructures.League import League
 from DataStructures.Team import Team
 import json
+from JSONDatabase import JSONDatabase
+
 class LiveScoreParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
@@ -42,7 +44,7 @@ class LiveScoreParser(HTMLParser):
 
                 i += 1
                 leagues.append(League(self.data[i]))
-                count = 0
+                Logger.notify(Logger.INFO, 'Got table of ' + self.data[i]);
 
                 while(i < dataSize):
 
@@ -84,32 +86,43 @@ class LiveScoreParser(HTMLParser):
             i += 1
         return leagues
 
-
-
-
 class LiveScoreScraper:
     url = 'http://www.livescore.com/'
 
     @staticmethod
     def scrap():
         try:
+            Logger.notify(Logger.INFO, 'Starting to FETCH html from http://www.livescore.com/');
             response = urllib2.urlopen('http://www.livescore.com/')
             html = response.read()
+            Logger.notify(Logger.INFO, 'Finished fetching html from http://www.livescore.com/');
+            Logger.notify(Logger.INFO, 'Starting to PARSE data from http://www.livescore.com/');
             parser = LiveScoreParser()
             parser.feed(html)
             leagues = parser.process()
-            print json.JSONEncoder.encode(leagues)
+            Logger.notify(Logger.INFO, 'Finished parsing data from http://www.livescore.com/');
+            json_data = []
             for league in leagues:
-                print league
+                json_data.append({'league': {'name': league.name, 'teams': []}})
+
+                for team in league.teams:
+                    json_data[-1]['league']['teams'].append({'rank': team.rank, 'name': team.name, \
+                                                   'goaldiff': team.goaldiff, 'point': team.point})
+
+
+            return json.dumps(json_data);
+            #JSONDatabase.write(json.dumps(json_data));
+            #leagues = JSONDatabase.read()
+
+            # for league in leagues:
+            #     print league
 
         except urllib2.URLError as e:
             if hasattr(e, 'reason'):
-                print 'We failed to reach a server.'
+                Logger.notify(Logger.ERROR, r'We failed to reach http://www.livescore.com/.')
                 Logger.log('We failed to reach a server: ' + e.reason)
             elif hasattr(e, 'code'):
-                print 'The server couldn\'t fulfill the request.'
+                Logger.notify(Logger.ERROR, r'http://www.livescore.com/ couldn\'t fulfill the request.')
                 Logger.log('The server couldn\'t fulfill the request.' + e.code)
         else:
             pass
-
-        #print(html)
