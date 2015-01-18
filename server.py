@@ -28,6 +28,7 @@ except socket.error, e:
 # Initialize MUTEX
 srv_lock=threading.Lock()
 buffer = Buffer()
+db = JSONDatabase()
 
 class ClientSocket(threading.Thread):
 
@@ -56,7 +57,7 @@ class ClientSocket(threading.Thread):
                             Logger.notify(Logger.INFO, "Processing UPDATE request of client %s:%d" % addr)
 
                             srv_lock.acquire()
-                            JSONDatabase.write(message.payload)
+                            db.write(message.payload)
                             srv_lock.release()
 
                             Logger.notify(Logger.INFO, "Finished storing UPDATE request of client %s:%d" % addr)

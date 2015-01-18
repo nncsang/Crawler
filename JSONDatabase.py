@@ -6,11 +6,11 @@ import json
 from DataStructures.League import League
 from DataStructures.Team import Team
 from Logger import Logger
+from Database import Database
 
-class JSONDatabase:
+class JSONDatabase(Database):
 
-    @staticmethod
-    def write(data):
+    def write(self, data):
         Logger.notify(Logger.INFO, "Opening database")
         db = open(GlobalVariable.LEAGUE_DATABSE, 'w+');
 
@@ -33,8 +33,7 @@ class JSONDatabase:
         Logger.notify(Logger.INFO, "Closing database")
         db.close()
 
-    @staticmethod
-    def read():
+    def read(self):
         db = open(GlobalVariable.LEAGUE_DATABSE, 'r');
         data = json.load(db)
         db.close()
