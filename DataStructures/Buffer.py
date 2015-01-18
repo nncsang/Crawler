@@ -1,8 +1,9 @@
 __author__ = 'nncsang'
 
-import Message
+from DataStructures.Message import Message
+
 class Buffer:
-    def __init__(self, buffer):
+    def __init__(self, buffer = ''):
         self.buffer = buffer
 
     def parse(self):
@@ -11,3 +12,5 @@ class Buffer:
         self.buffer = self.buffer[consumed:]
         return m if consumed > 0 else None
 
+    def updateBuffer(self, buffer):
+        self.buffer += buffer

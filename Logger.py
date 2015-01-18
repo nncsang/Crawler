@@ -16,11 +16,12 @@ class Logger:
 
     @classmethod
     def notify(self, type, message):
+        time_now = time.strftime("%d/%m/%Y") + ' ' +  time.strftime("%I:%M:%S") + ' ';
         if (type == self.INFO):
-            print('INFO:\t' + message)
+            print(time_now + 'INFO:\t' + message)
 
         if (type == self.WARN):
-            print('WARN:\t' + message)
+            print(time_now + 'WARN:\t' + message)
 
         if (type == self.ERROR):
-            print('ERROR:\t' + message)
+            print(time_now + 'ERROR:\t' + message)

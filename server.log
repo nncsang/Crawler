@@ -6,3 +6,33 @@ ERROR: 18/01/2015 09:55:37 - Can not connect to server!!!
 ERROR: 18/01/2015 09:55:53 - Can not connect to server!!!
 ERROR: 18/01/2015 09:56:04 - Can not connect to server!!!
 ERROR: 18/01/2015 09:57:54 - Can not connect to server!!!
+ERROR: 18/01/2015 10:27:30 - Error when initializing SOCKET: [Errno 48] Address already in use
+ERROR: 18/01/2015 10:27:48 - Error when initializing SOCKET: [Errno 48] Address already in use
+ERROR: 18/01/2015 10:39:59 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 18/01/2015 10:45:51 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 18/01/2015 11:02:07 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:03:27 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:04:59 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 18/01/2015 11:08:57 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:11:45 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:15:38 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:17:55 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:18:56 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:19:45 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:20:34 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:21:09 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:21:32 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:30:19 - Error when initializing SOCKET: [Errno 48] Address already in use
+ERROR: 18/01/2015 11:30:54 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:33:18 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:33:58 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:35:39 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:37:13 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:46:28 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:48:22 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:48:43 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:49:07 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:49:19 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:52:33 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 11:58:14 - Error when waiting for confirmation from server
+ERROR: 18/01/2015 12:12:43 - Error when waiting for confirmation from server

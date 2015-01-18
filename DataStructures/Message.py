@@ -30,15 +30,9 @@ class Message:
 
     def __str__(self):
         if len(self.args):
-            return "%s %d %s\n" % (self.type, len(self.payload),  " ".join(map(str, self.args)) + self.payload)
+            return "%s %d %s\n" % (self.type, len(self.payload),  " ".join(map(str, self.args))) + self.payload
         else:
-            return "%s %d %s\n" % (self.type, len(self.payload), self.payload)
+            return "%s %d\n" % (self.type, len(self.payload)) + self.payload
 
-# m = Message("PUT", ["token_id"], "Hello World")
-# print (str(m))
-# m.parse("PUT 12 token_id\n Hello World")
-# print(m.type)
-# print(m.args)
-# print(m.payload)
 
 
