@@ -10,3 +10,4 @@ class League:
 
     def __str__(self):
         return self.name + '\n' + '\n'.join([str(team) for team in self.teams]) + '\n' + '*****************' + '\n'
+
