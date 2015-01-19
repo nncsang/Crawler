@@ -17,9 +17,9 @@ def display_ranking_tables(data):
         league_obj = league_obj['league']
 
         print('\t' + league_obj['name'])
-        print('\t\t' + "\t\t".join(("Rank", "Name", "Goal Diff", "Point")))
+        print('\t\t' + "\t\t".join(("Rank", "Name", "Played Match", "Point")))
         for team_obj in league_obj['teams']:
-            print('\t\t' + "\t".join((team_obj['rank'], team_obj['name'], team_obj['goaldiff'], team_obj['point'])))
+            print('\t\t' + "\t".join((team_obj['rank'], team_obj['name'], team_obj['played_match'], team_obj['point'])))
         print('\t'+ '*' * 55 + '\n')
 
 Logger.notify(Logger.INFO, 'Starting working')

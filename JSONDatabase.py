@@ -23,7 +23,7 @@ class JSONDatabase(Database):
             Logger.notify(Logger.INFO, "Storing " + league_obj['name'])
 
             for team_obj in league_obj['teams']:
-                team = Team(team_obj['name'], team_obj['rank'], team_obj['goaldiff'], team_obj['point']);
+                team = Team(team_obj['name'], team_obj['rank'], team_obj['played_match'], team_obj['point']);
                 league.teams.append(team)
                 Logger.notify(Logger.INFO, "Storing record \"" + str(team) + '\"')
 

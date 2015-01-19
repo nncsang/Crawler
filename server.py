@@ -16,7 +16,6 @@ try:
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     srv.bind((GlobalVariable.HOST, GlobalVariable.PORT))
-    #srv.listen(GlobalVariable.BACK_LOG)
     srv.listen(GlobalVariable.BACK_LOG)
     #srv.settimeout(GlobalVariable.TIME_OUT)
 

@@ -71,7 +71,7 @@ class LiveScoreParser(HTMLParser):
                                         elif count == 2:
                                             team.name = self.data[i]
                                         elif count == 3:
-                                            team.goaldiff = self.data[i]
+                                            team.played_match = self.data[i]
                                         elif count == 4:
                                             team.point = self.data[i]
 
@@ -107,7 +107,7 @@ class LiveScoreScraper:
 
                 for team in league.teams:
                     json_data[-1]['league']['teams'].append({'rank': team.rank, 'name': team.name, \
-                                                   'goaldiff': team.goaldiff, 'point': team.point})
+                                                   'played_match': team.played_match, 'point': team.point})
 
 
             return json.dumps(json_data);
