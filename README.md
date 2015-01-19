@@ -1,1 +1,3 @@
 # NetworkI-Homework
+In this project, I implemented a client capable of scraping data from http://www.livescore.com/ to get the league tables of Premier League, Serie A, Liga BBVA, Bundesliga, and Ligue 1. Each league table contains a certain number of football teams, each football team has the information of ranking, number of played match and point.
+After scraping data, I store these data into a small database. My database implemented as a TCP server. We also defined our own application protocol for the communication between the client and the server. For the detail, please read [this file](./document/Report.pdf)
