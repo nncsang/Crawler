@@ -22,6 +22,7 @@ def display_ranking_tables(data):
             print('\t\t' + "\t".join((team_obj['rank'], team_obj['name'], team_obj['played_match'], team_obj['point'])))
         print('\t'+ '*' * 55 + '\n')
 
+
 Logger.notify(Logger.INFO, 'Starting working')
 
 Logger.notify(Logger.INFO, 'Starting to SCRAP tables')
@@ -65,50 +66,49 @@ try:
                 Logger.notify(Logger.INFO, 'Response for LOGIN: ' + message.payload)
                 Logger.notify(Logger.INFO, 'PASS request is sent')
                 previous_message = request
-                break
+                continue
 
             if (message.type == "ERR"):
-                Logger.notify(Logger.INFO, 'Error: ' + message.payload)
+                Logger.notify(Logger.INFO, 'Error for ' + previous_message.type + ': ' + message.payload)
                 Logger.notify(Logger.INFO, 'Program exiting with error')
                 exit()
-                break;
+                continue
 
-            if (previous_message.type == "PASS" and message.type == "ACK"):
-                request = Message("UPDATE", [], json_data)
-                cli.send(str(request))
-                Logger.notify(Logger.INFO, 'UPDATE request is sent')
-                Logger.notify(Logger.INFO, 'Waiting for response')
-                previous_message = request
-                break
 
-            if (message.type == "ACK" and previous_message.type == "UPDATE"):
-                if (message.payload == "OK"):
+            if (message.type == "ACK"):
+
+                if (previous_message.type == "UPDATE"):
                     Logger.notify(Logger.INFO, 'Server said UPDATE request is OK')
                     request = Message("SELECT", ["ALL"], '')
                     cli.send(str(request))
                     Logger.notify(Logger.INFO, 'SELECT request is sent')
                     Logger.notify(Logger.INFO, 'Waiting for response')
                     previous_message = request;
-                else:
-                    Logger.notify(Logger.INFO, 'Server said UPDATE request:' + message.payload)
-                break
+                    continue
 
-            if (message.type == "ACK" and previous_message.type == "CLOSE"):
-                if (message.payload == "OK"):
+                if (previous_message.type == "CLOSE"):
                     Logger.notify(Logger.INFO, 'Server said CLOSE request is accepted')
                     Logger.notify(Logger.INFO, 'Program exited')
                     exit()
-                else:
-                    Logger.notify(Logger.INFO, 'Server said CLOSE request:' + message.payload)
-                break
+                    continue
+
+                if (previous_message.type == "PASS"):
+                    Logger.notify(Logger.INFO, 'Response for PASS: ' + message.payload)
+                    request = Message("UPDATE", [], json_data)
+                    cli.send(str(request))
+                    Logger.notify(Logger.INFO, 'UPDATE request is sent')
+                    Logger.notify(Logger.INFO, 'Waiting for response')
+                    previous_message = request
+                    continue
 
             if (message.type == "RES_SELECT"):
                 display_ranking_tables(message.payload)
                 request = Message("CLOSE", [], '')
+                previous_message = request
                 cli.send(str(request))
                 Logger.notify(Logger.INFO, 'CLOSE request is sent')
                 Logger.notify(Logger.INFO, 'Waiting for confirmation')
-                break
+                continue
 
 
 except socket.error, e:

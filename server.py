@@ -55,15 +55,19 @@ class ClientSocket(threading.Thread):
 
                         if (message.type == "LOGIN" and len(message.args) == 0):
                             self.username = message.payload
+                            self.conn.send(str(Message("ACK", [], "Please send me your password")))
+                            continue
 
                         if (message.type == "PASS" and len(message.args) == 1):
                             if (message.args[0] == self.username):
                                 if (message.payload == GlobalVariable.PASS):
+                                    self.authenticated = True
                                     self.conn.send(str(Message("ACK", [], "Welcome!!!")))
                                 else:
                                     self.conn.send(str(Message("ERR", [], "Wrong password!!!")))
                             else:
                                 self.conn.send(str(Message("ERR", [], "Wrong username")))
+                            continue
 
                         if (self.authenticated == True):
                             if (message.type == "UPDATE"):
@@ -99,7 +103,7 @@ class ClientSocket(threading.Thread):
                                 else:
                                     response = Message("ERR", [], "SELECT fail")
                                 self.conn.send(str(response))
-                                break
+                                continue
                         else:
                             self.conn.send(str(Message("ERR", [], "Please login to update or select!!!")))
 
@@ -111,7 +115,7 @@ class ClientSocket(threading.Thread):
                             response = Message("ACK", [], "")
                             self.conn.send(str(response))
 
-                            break
+                            continue
 
 
 

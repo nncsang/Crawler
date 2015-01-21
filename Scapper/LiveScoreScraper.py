@@ -1,6 +1,9 @@
 __author__ = 'nncsang'
 
-import urllib2
+#import urllib2
+import socket
+import GlobalVariable
+
 from Logger import Logger
 from HTMLParser import HTMLParser
 from DataStructures.League import League
@@ -90,11 +93,22 @@ class LiveScoreScraper:
     url = 'http://www.livescore.com/'
 
     @staticmethod
-    def scrap():
+    def scrap(url):
         try:
             Logger.notify(Logger.INFO, 'Starting to FETCH html from http://www.livescore.com/');
-            response = urllib2.urlopen('http://www.livescore.com/')
-            html = response.read()
+            # response = urllib2.urlopen('http://' + url + '/')
+            # html = response.read()
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((GlobalVariable.TABLE_URL , 80))
+            s.sendall("GET http://"+ GlobalVariable.TABLE_URL + " HTTP/1.0\n\n")
+
+            response = [s.recv(2048)]
+            while response[-1]:
+                response.append(s.recv(2048))
+
+            html = ''.join(response)
+            s.close()
+
             Logger.notify(Logger.INFO, 'Finished fetching html from http://www.livescore.com/');
             Logger.notify(Logger.INFO, 'Starting to PARSE data from http://www.livescore.com/');
             parser = LiveScoreParser()
@@ -111,13 +125,8 @@ class LiveScoreScraper:
 
 
             return json.dumps(json_data);
-            #JSONDatabase.write(json.dumps(json_data));
-            #leagues = JSONDatabase.read()
 
-            # for league in leagues:
-            #     print league
-
-        except urllib2.URLError as e:
+        except socket.error as e:
             if hasattr(e, 'reason'):
                 Logger.notify(Logger.ERROR, r'We failed to reach http://www.livescore.com/.')
                 Logger.log('We failed to reach a server: ' + e.reason)
