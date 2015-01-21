@@ -40,3 +40,21 @@ ERROR: 18/01/2015 12:49:10 - Error when sending UPDATE request to server. The re
  .Error: [Errno 32] Broken pipe
 ERROR: 18/01/2015 02:11:59 - Can not connect to server!!!. Error: [Errno 61] Connection refused
 ERROR: 19/01/2015 07:59:59 - Error when initializing SOCKET: [Errno 48] Address already in use
+ERROR: 21/01/2015 05:19:06 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 05:19:14 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 05:19:50 - Error: [Errno 35] Resource temporarily unavailable
+ERROR: 21/01/2015 05:21:34 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 05:21:42 - Error: [Errno 35] Resource temporarily unavailable
+ERROR: 21/01/2015 05:23:58 - Error: [Errno 35] Resource temporarily unavailable
+ERROR: 21/01/2015 05:24:29 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 05:24:35 - Error: [Errno 35] Resource temporarily unavailable
+ERROR: 21/01/2015 05:58:51 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 06:00:41 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 06:01:04 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 06:01:39 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 06:02:03 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 06:02:31 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 06:03:04 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 06:03:35 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 06:03:55 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 06:05:55 - Can not connect to server!!!. Error: [Errno 61] Connection refused

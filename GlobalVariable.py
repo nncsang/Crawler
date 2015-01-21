@@ -7,3 +7,5 @@ BACK_LOG = 5
 TIME_OUT = 10
 LOG_FILE = "server.log"
 LEAGUE_DATABSE = "league.json"
+TABLE_URL = "www.livescore.com"
+PASS = "1234"

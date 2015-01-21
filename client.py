@@ -24,6 +24,12 @@ def display_ranking_tables(data):
 
 Logger.notify(Logger.INFO, 'Starting working')
 
+Logger.notify(Logger.INFO, 'Starting to SCRAP tables')
+json_data = LiveScoreScraper.scrap(GlobalVariable.TABLE_URL);
+Logger.notify(Logger.INFO, 'Finished scraping tables')
+Logger.notify(Logger.INFO, 'Connected to server on ' + GlobalVariable.HOST + ':' + str(GlobalVariable.PORT))
+Logger.notify(Logger.INFO, 'Sending LOGIN request to server')
+
 try:
     cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     cli.connect((GlobalVariable.HOST, GlobalVariable.PORT))
@@ -33,19 +39,15 @@ except socket.error, e:
     Logger.log('Can not connect to server!!!. Error: ' + str(e))
     exit();
 
-Logger.notify(Logger.INFO, 'Starting to SCRAP tables')
-json_data = LiveScoreScraper.scrap();
-Logger.notify(Logger.INFO, 'Finished scraping tables')
-Logger.notify(Logger.INFO, 'Connected to server on ' + GlobalVariable.HOST + ':' + str(GlobalVariable.PORT))
-Logger.notify(Logger.INFO, 'Sending UPDATE request to server')
-
 buffer = Buffer()
 
+previous_message = None
 try:
-    request = Message("UPDATE", [], json_data)
+    request = Message("LOGIN", [], "nncsang")
     cli.send(str(request))
-    Logger.notify(Logger.INFO, 'UPDATE request is sent')
+    Logger.notify(Logger.INFO, 'LOGIN request is sent')
     Logger.notify(Logger.INFO, 'Waiting for response')
+    previous_message = request
 
     while(True):
         ans = cli.recv(1024)
@@ -57,18 +59,41 @@ try:
             if (message == None):
                 break
 
-            if (message.type == "RES_UPDATE"):
+            if (previous_message.type == "LOGIN" and message.type == "ACK"):
+                request = Message("PASS", ["nncsang"], "1234")
+                cli.send(str(request))
+                Logger.notify(Logger.INFO, 'Response for LOGIN: ' + message.payload)
+                Logger.notify(Logger.INFO, 'PASS request is sent')
+                previous_message = request
+                break
+
+            if (message.type == "ERR"):
+                Logger.notify(Logger.INFO, 'Error: ' + message.payload)
+                Logger.notify(Logger.INFO, 'Program exiting with error')
+                exit()
+                break;
+
+            if (previous_message.type == "PASS" and message.type == "ACK"):
+                request = Message("UPDATE", [], json_data)
+                cli.send(str(request))
+                Logger.notify(Logger.INFO, 'UPDATE request is sent')
+                Logger.notify(Logger.INFO, 'Waiting for response')
+                previous_message = request
+                break
+
+            if (message.type == "ACK" and previous_message.type == "UPDATE"):
                 if (message.payload == "OK"):
                     Logger.notify(Logger.INFO, 'Server said UPDATE request is OK')
                     request = Message("SELECT", ["ALL"], '')
                     cli.send(str(request))
                     Logger.notify(Logger.INFO, 'SELECT request is sent')
                     Logger.notify(Logger.INFO, 'Waiting for response')
+                    previous_message = request;
                 else:
                     Logger.notify(Logger.INFO, 'Server said UPDATE request:' + message.payload)
                 break
 
-            if (message.type == "RES_CLOSE"):
+            if (message.type == "ACK" and previous_message.type == "CLOSE"):
                 if (message.payload == "OK"):
                     Logger.notify(Logger.INFO, 'Server said CLOSE request is accepted')
                     Logger.notify(Logger.INFO, 'Program exited')
@@ -96,6 +121,7 @@ except socket.error, e:
         Logger.notify(Logger.ERROR, 'Error when sending CLOSE connection request to server');
         Logger.log('Error when sending UPDATE request to server. The request is: ' + str(request) + " .Error: " + str(e))
         Logger.notify(Logger.INFO, 'Program exited')
+
     exit()
 
 
