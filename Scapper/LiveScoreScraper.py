@@ -9,6 +9,8 @@ from HTMLParser import HTMLParser
 from DataStructures.League import League
 from DataStructures.Team import Team
 import json
+import sys
+
 from JSONDatabase import JSONDatabase
 
 class LiveScoreParser(HTMLParser):
@@ -64,20 +66,36 @@ class LiveScoreParser(HTMLParser):
                                 count = 0;
                                 team = Team()
                                 while (i < dataSize and count != 4):
-                                    # print ("%s %d %s") % (type(self.data[i]), len(self.data[i]), self.data[i])
-                                    if (type(self.data[i]) is str and self.data[i] != ' '):
+
+                                    #if (type(self.data[i]) is str and self.data[i] != ' '):
                                         #print self.data[i]
-                                        count += 1
 
-                                        if (count == 1):
-                                            team.rank = self.data[i]
-                                        elif count == 2:
-                                            team.name = self.data[i]
-                                        elif count == 3:
-                                            team.played_match = self.data[i]
-                                        elif count == 4:
-                                            team.point = self.data[i]
+                                    if (type(self.data[i]) is tuple):
+                                        if (self.data[i][1] != None):
+                                            #print ("%s %d %s") % (type(self.data[i]), len(self.data[i]), self.data[i])
+                                            if (self.data[i][0] == 'span' and ('data-type', 'rank') in self.data[i][1]):
+                                                i += 1
+                                                team.rank = self.data[i]
+                                                count += 1
+                                                continue
 
+                                            if (self.data[i][0] == 'div' and ('data-type', 'name') in self.data[i][1]):
+                                                i += 1
+                                                team.name = self.data[i]
+                                                count += 1
+                                                continue
+
+                                            if (self.data[i][0] == 'div' and ('data-type', 'goaldiff') in self.data[i][1]):
+                                                i += 1
+                                                team.played_match = self.data[i]
+                                                count += 1
+                                                continue
+
+                                            if (self.data[i][0] == 'div' and ('data-type', 'points') in self.data[i][1]):
+                                                i += 1
+                                                team.point = self.data[i]
+                                                count += 1
+                                                continue
 
                                     i += 1;
 
@@ -102,12 +120,15 @@ class LiveScoreScraper:
             s.connect((GlobalVariable.TABLE_URL , 80))
             s.sendall("GET http://"+ GlobalVariable.TABLE_URL + " HTTP/1.0\n\n")
 
+            sys.stdout.write('....')
             response = [s.recv(2048)]
             while response[-1]:
+                sys.stdout.write('.')
                 response.append(s.recv(2048))
 
             html = ''.join(response)
             s.close()
+            print '.'
 
             Logger.notify(Logger.INFO, 'Finished fetching html from http://www.livescore.com/');
             Logger.notify(Logger.INFO, 'Starting to PARSE data from http://www.livescore.com/');
@@ -127,11 +148,13 @@ class LiveScoreScraper:
             return json.dumps(json_data);
 
         except socket.error as e:
+
             if hasattr(e, 'reason'):
                 Logger.notify(Logger.ERROR, r'We failed to reach http://www.livescore.com/.')
                 Logger.log('We failed to reach a server: ' + e.reason)
             elif hasattr(e, 'code'):
                 Logger.notify(Logger.ERROR, r'http://www.livescore.com/ couldn\'t fulfill the request.')
                 Logger.log('The server couldn\'t fulfill the request.' + e.code)
+            return None
         else:
             pass

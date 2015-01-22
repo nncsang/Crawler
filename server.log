@@ -64,3 +64,5 @@ ERROR: 21/01/2015 06:38:51 - Can not connect to server!!!. Error: [Errno 61] Con
 ERROR: 21/01/2015 07:46:08 - Can not connect to server!!!. Error: [Errno 61] Connection refused
 ERROR: 21/01/2015 07:48:34 - Can not connect to server!!!. Error: [Errno 61] Connection refused
 ERROR: 21/01/2015 07:49:57 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 21/01/2015 08:07:52 - Can not connect to server!!!. Error: [Errno 61] Connection refused
+ERROR: 22/01/2015 05:28:29 - Error when initializing SOCKET: [Errno 48] Address already in use

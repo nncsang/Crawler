@@ -24,12 +24,16 @@ def display_ranking_tables(data):
 
 
 Logger.notify(Logger.INFO, 'Starting working')
-
 Logger.notify(Logger.INFO, 'Starting to SCRAP tables')
 json_data = LiveScoreScraper.scrap(GlobalVariable.TABLE_URL);
+
+
+if json_data == None:
+    Logger.notify(Logger.ERROR, 'Error when scraping tables')
+    Logger.notify(Logger.INFO, 'Program exited')
+    exit();
+
 Logger.notify(Logger.INFO, 'Finished scraping tables')
-Logger.notify(Logger.INFO, 'Connected to server on ' + GlobalVariable.HOST + ':' + str(GlobalVariable.PORT))
-Logger.notify(Logger.INFO, 'Sending LOGIN request to server')
 
 try:
     cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -40,12 +44,15 @@ except socket.error, e:
     Logger.log('Can not connect to server!!!. Error: ' + str(e))
     exit();
 
+Logger.notify(Logger.INFO, 'Connected to server on ' + GlobalVariable.HOST + ':' + str(GlobalVariable.PORT))
+Logger.notify(Logger.INFO, 'Sending LOGIN request to server')
+
 buffer = Buffer()
 
 previous_message = None
 try:
     request = Message("LOGIN", [], "nncsang")
-    cli.send(str(request))
+    cli.sendall(str(request))
     Logger.notify(Logger.INFO, 'LOGIN request is sent')
     Logger.notify(Logger.INFO, 'Waiting for response')
     previous_message = request
@@ -60,27 +67,17 @@ try:
             if (message == None):
                 break
 
-            if (previous_message.type == "LOGIN" and message.type == "ACK"):
-                request = Message("PASS", ["nncsang"], "1234")
-                cli.send(str(request))
-                Logger.notify(Logger.INFO, 'Response for LOGIN: ' + message.payload)
-                Logger.notify(Logger.INFO, 'PASS request is sent')
-                previous_message = request
-                continue
-
             if (message.type == "ERR"):
-                Logger.notify(Logger.INFO, 'Error for ' + previous_message.type + ': ' + message.payload)
+                Logger.notify(Logger.INFO, previous_message.type + ' request\'s error: ' + message.payload)
                 Logger.notify(Logger.INFO, 'Program exiting with error')
                 exit()
                 continue
 
-
             if (message.type == "ACK"):
-
                 if (previous_message.type == "UPDATE"):
                     Logger.notify(Logger.INFO, 'Server said UPDATE request is OK')
                     request = Message("SELECT", ["ALL"], '')
-                    cli.send(str(request))
+                    cli.sendall(str(request))
                     Logger.notify(Logger.INFO, 'SELECT request is sent')
                     Logger.notify(Logger.INFO, 'Waiting for response')
                     previous_message = request;
@@ -95,9 +92,17 @@ try:
                 if (previous_message.type == "PASS"):
                     Logger.notify(Logger.INFO, 'Response for PASS: ' + message.payload)
                     request = Message("UPDATE", [], json_data)
-                    cli.send(str(request))
+                    cli.sendall(str(request))
                     Logger.notify(Logger.INFO, 'UPDATE request is sent')
                     Logger.notify(Logger.INFO, 'Waiting for response')
+                    previous_message = request
+                    continue
+
+                if (previous_message.type == "LOGIN"):
+                    request = Message("PASS", ["nncsang"], "1234")
+                    cli.sendall(str(request))
+                    Logger.notify(Logger.INFO, 'Response for LOGIN: ' + message.payload)
+                    Logger.notify(Logger.INFO, 'PASS request is sent')
                     previous_message = request
                     continue
 
@@ -105,7 +110,7 @@ try:
                 display_ranking_tables(message.payload)
                 request = Message("CLOSE", [], '')
                 previous_message = request
-                cli.send(str(request))
+                cli.sendall(str(request))
                 Logger.notify(Logger.INFO, 'CLOSE request is sent')
                 Logger.notify(Logger.INFO, 'Waiting for confirmation')
                 continue

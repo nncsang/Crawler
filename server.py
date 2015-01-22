@@ -55,22 +55,22 @@ class ClientSocket(threading.Thread):
 
                         if (message.type == "LOGIN" and len(message.args) == 0):
                             self.username = message.payload
-                            self.conn.send(str(Message("ACK", [], "Please send me your password")))
+                            self.conn.sendall(str(Message("ACK", [], "Please send me your password")))
                             continue
 
                         if (message.type == "PASS" and len(message.args) == 1):
                             if (message.args[0] == self.username):
                                 if (message.payload == GlobalVariable.PASS):
                                     self.authenticated = True
-                                    self.conn.send(str(Message("ACK", [], "Welcome!!!")))
+                                    self.conn.sendall(str(Message("ACK", [], "Welcome!!!")))
                                 else:
-                                    self.conn.send(str(Message("ERR", [], "Wrong password!!!")))
+                                    self.conn.sendall(str(Message("ERR", [], "Wrong password!!!")))
                             else:
-                                self.conn.send(str(Message("ERR", [], "Wrong username")))
+                                self.conn.sendall(str(Message("ERR", [], "Wrong username")))
                             continue
 
                         if (self.authenticated == True):
-                            if (message.type == "UPDATE"):
+                            if (message.type == "UPDATE" and len(message.args) == 0):
                                 Logger.notify(Logger.INFO, "Client %s:%d sent UPDATE request" % self.addr)
                                 Logger.notify(Logger.INFO, "Processing UPDATE request of client %s:%d" % self.addr)
 
@@ -86,10 +86,10 @@ class ClientSocket(threading.Thread):
                                 else:
                                     response = Message("ERR", [], "Update failed")
 
-                                self.conn.send(str(response))
+                                self.conn.sendall(str(response))
                                 continue
 
-                            if (message.type == "SELECT" and "ALL" in message.args):
+                            if (message.type == "SELECT" and "ALL" in message.args and len(message.args) == 1):
                                 Logger.notify(Logger.INFO, "Client %s:%d sent SELECT ALL request" % self.addr)
                                 Logger.notify(Logger.INFO, "Processing SELECT request of client %s:%d" % self.addr)
 
@@ -102,18 +102,18 @@ class ClientSocket(threading.Thread):
                                     response = Message("RES_SELECT", [], response)
                                 else:
                                     response = Message("ERR", [], "SELECT fail")
-                                self.conn.send(str(response))
+                                self.conn.sendall(str(response))
                                 continue
                         else:
-                            self.conn.send(str(Message("ERR", [], "Please login to update or select!!!")))
+                            self.conn.sendall(str(Message("ERR", [], "Please login to update or select!!!")))
 
-                        if (message.type == "CLOSE"):
+                        if (message.type == "CLOSE" and len(message.args) == 0):
                             self.authenticated = False
                             self.username = ""
                             Logger.notify(Logger.INFO, "Client %s:%d sent CLOSE request" % self.addr)
                             Logger.notify(Logger.INFO, "Sending OK for closing request to client %s:%d" % self.addr)
                             response = Message("ACK", [], "")
-                            self.conn.send(str(response))
+                            self.conn.sendall(str(response))
 
                             continue
 
